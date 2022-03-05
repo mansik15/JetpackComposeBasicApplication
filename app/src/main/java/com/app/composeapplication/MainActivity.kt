@@ -67,8 +67,8 @@ private fun Greeting(name: String) {
                 .weight(1f)
                 .padding(bottom = extraPadding)
             ) {
-                Text(text = "Hello, ")
-                Text(text = name)
+                Text(text = "City $name")
+//                Text(text = name)
             }
             OutlinedButton(
                 onClick = { expanded.value = !expanded.value }
@@ -88,13 +88,13 @@ fun OnboardingScreen(onContinueClicked: () -> Unit) {
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text("Welcome to the Basics Codelab!")
+            Text("Welcome to the United Kingdom!")
             Button(
                 modifier = Modifier
                     .padding(vertical = 24.dp),
                 onClick = onContinueClicked
             ) {
-                Text("Continue")
+                Text("Explore")
             }
         }
     }
