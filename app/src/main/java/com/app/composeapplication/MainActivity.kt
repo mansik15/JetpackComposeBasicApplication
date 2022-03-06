@@ -18,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.rememberNavController
@@ -38,12 +39,14 @@ class MainActivity : ComponentActivity() {
 private fun EntryPoint() {
     val navController = rememberNavController()
     var shouldShowOnboarding by rememberSaveable { mutableStateOf(true) }
+    var shouldShowDetails by rememberSaveable { mutableStateOf(true) }
 
     if (shouldShowOnboarding) {
         OnboardingScreen(onContinueClicked = { shouldShowOnboarding = false })
     } else {
         StateList()
     }
+
 }
 
 @Composable
@@ -57,7 +60,7 @@ private fun StateList(names: List<String> = List(1000) { "$it" }) {
         content = {
             LazyColumn(modifier = Modifier.padding(vertical = 4.dp)) {
                 items(items = names) { name ->
-                    SingleState(name = name)
+                    StateCard(name = name)
                 }
             }
         }
@@ -65,7 +68,7 @@ private fun StateList(names: List<String> = List(1000) { "$it" }) {
 }
 
 @Composable
-private fun SingleState(name: String) {
+private fun StateCard(name: String) {
     val context = LocalContext.current
     val expanded = rememberSaveable { mutableStateOf(false) }
 
@@ -97,7 +100,9 @@ private fun SingleState(name: String) {
                 Text(if (expanded.value) "Show less" else "Show more")
             }*/
             IconButton(modifier = Modifier.then(Modifier.size(24.dp)),
-                onClick = { }) {
+                onClick = {
+
+                }) {
                 Icon(
                     Icons.Filled.ArrowForward,
                     "contentDescription",
@@ -109,6 +114,24 @@ private fun SingleState(name: String) {
 }
 
 @Composable
+private fun CityDetails(){
+
+    Surface {
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.Start
+        ) {
+            Text("City Name")
+            Text("State")
+            Text("Country")
+            Text("Pin code")
+        }
+    }
+
+}
+
+@Composable
 fun OnboardingScreen(onContinueClicked: () -> Unit) {
 
     Surface {
@@ -117,7 +140,7 @@ fun OnboardingScreen(onContinueClicked: () -> Unit) {
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text("Welcome to the United Kingdom!", color = MaterialTheme.colors.primary)
+            Text("Welcome to the United Kingdom!", color = MaterialTheme.colors.primary, fontStyle = FontStyle.Italic)
             Button(
                 modifier = Modifier
                     .padding(vertical = 24.dp),
@@ -142,6 +165,6 @@ fun OnboardingPreview() {
 @Composable
 fun DefaultPreview() {
     ComposeApplicationTheme {
-        SingleState("Amsterdam")
+        StateCard("Amsterdam")
     }
 }
