@@ -30,7 +30,7 @@ private fun CityDetails(){
     Surface {
         Column(
             modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.Center,
+            verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.Start
         ) {
             Text("City Name")

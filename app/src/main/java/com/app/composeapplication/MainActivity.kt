@@ -21,6 +21,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.app.composeapplication.ui.theme.ComposeApplicationTheme
 
@@ -36,21 +39,33 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-private fun EntryPoint() {
+fun EntryPoint() {
     val navController = rememberNavController()
-    var shouldShowOnboarding by rememberSaveable { mutableStateOf(true) }
+    NavHost(navController, startDestination = "onboarding") {
+        composable(route = "onboarding") {
+            OnboardingScreen(navController)
+        }
+        composable(route = "state") {
+            StateList(navController)
+        }
+        composable(route = "detail") {
+            CityDetails()
+        }
+    }
+
+    /*var shouldShowOnboarding by rememberSaveable { mutableStateOf(true) }
     var shouldShowDetails by rememberSaveable { mutableStateOf(true) }
 
     if (shouldShowOnboarding) {
         OnboardingScreen(onContinueClicked = { shouldShowOnboarding = false })
     } else {
         StateList()
-    }
+    }*/
 
 }
 
 @Composable
-private fun StateList(names: List<String> = List(1000) { "$it" }) {
+private fun StateList(navController: NavController,names: List<String> = List(1000) { "$it" }) {
     Scaffold(
         topBar = {
             TopAppBar(
@@ -60,7 +75,7 @@ private fun StateList(names: List<String> = List(1000) { "$it" }) {
         content = {
             LazyColumn(modifier = Modifier.padding(vertical = 4.dp)) {
                 items(items = names) { name ->
-                    StateCard(name = name)
+                    StateCard(name = name, navController = navController)
                 }
             }
         }
@@ -68,7 +83,7 @@ private fun StateList(names: List<String> = List(1000) { "$it" }) {
 }
 
 @Composable
-private fun StateCard(name: String) {
+private fun StateCard(name: String, navController: NavController) {
     val context = LocalContext.current
     val expanded = rememberSaveable { mutableStateOf(false) }
 
@@ -101,7 +116,7 @@ private fun StateCard(name: String) {
             }*/
             IconButton(modifier = Modifier.then(Modifier.size(24.dp)),
                 onClick = {
-
+                    navController.navigate("detail")
                 }) {
                 Icon(
                     Icons.Filled.ArrowForward,
@@ -116,10 +131,32 @@ private fun StateCard(name: String) {
 @Composable
 private fun CityDetails(){
 
-    Surface {
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text(text = "State Details") }
+            )
+        },
+        content = {
+            Surface (modifier = Modifier.padding(vertical = 4.dp, horizontal = 8.dp)){
+                Column(
+                    modifier = Modifier.fillMaxSize(),
+                    verticalArrangement = Arrangement.Top,
+                    horizontalAlignment = Alignment.Start
+                ) {
+                    Text("City Name")
+                    Text("State")
+                    Text("Country")
+                    Text("Pin code")
+                }
+            }
+        }
+    )
+
+    /*Surface {
         Column(
             modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.Center,
+            verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.Start
         ) {
             Text("City Name")
@@ -127,12 +164,12 @@ private fun CityDetails(){
             Text("Country")
             Text("Pin code")
         }
-    }
+    }*/
 
 }
 
 @Composable
-fun OnboardingScreen(onContinueClicked: () -> Unit) {
+fun OnboardingScreen(navController: NavController) {
 
     Surface {
         Column(
@@ -144,7 +181,7 @@ fun OnboardingScreen(onContinueClicked: () -> Unit) {
             Button(
                 modifier = Modifier
                     .padding(vertical = 24.dp),
-                onClick = onContinueClicked
+                onClick = {navController.navigate("state")}
             ) {
                 Text("Explore")
             }
@@ -157,7 +194,7 @@ fun OnboardingScreen(onContinueClicked: () -> Unit) {
 @Composable
 fun OnboardingPreview() {
     ComposeApplicationTheme {
-        OnboardingScreen(onContinueClicked = {})
+//        OnboardingScreen(onContinueClicked = {})
     }
 }
 
@@ -165,6 +202,6 @@ fun OnboardingPreview() {
 @Composable
 fun DefaultPreview() {
     ComposeApplicationTheme {
-        StateCard("Amsterdam")
+//        StateCard("Amsterdam")
     }
 }
