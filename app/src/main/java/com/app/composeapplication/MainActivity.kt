@@ -8,6 +8,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -49,7 +50,7 @@ fun EntryPoint() {
             StateList(navController)
         }
         composable(route = "detail") {
-            CityDetails()
+            CityDetails(navController)
         }
     }
 
@@ -129,12 +130,25 @@ private fun StateCard(name: String, navController: NavController) {
 }
 
 @Composable
-private fun CityDetails(){
+private fun CityDetails(navController: NavController){
 
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(text = "State Details") }
+                title = { Text(text = "State Details") },
+                navigationIcon = {
+                    // navigation icon is use
+                    // for drawer icon.
+                    IconButton(onClick = { navController.popBackStack() }) {
+                        // below line is use to
+                        // specify navigation icon.
+                        Icon(
+                            Icons.Filled.ArrowBack,
+                            "contentDescription",
+                            tint = Color.White
+                        )
+                    }
+                }
             )
         },
         content = {
@@ -152,19 +166,6 @@ private fun CityDetails(){
             }
         }
     )
-
-    /*Surface {
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.Top,
-            horizontalAlignment = Alignment.Start
-        ) {
-            Text("City Name")
-            Text("State")
-            Text("Country")
-            Text("Pin code")
-        }
-    }*/
 
 }
 
