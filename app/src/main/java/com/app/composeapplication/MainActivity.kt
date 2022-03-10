@@ -6,15 +6,14 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -152,18 +151,24 @@ private fun CityDetails(navController: NavController){
             )
         },
         content = {
-            Surface (modifier = Modifier.padding(vertical = 4.dp, horizontal = 8.dp)){
-                Column(
-                    modifier = Modifier.fillMaxSize(),
-                    verticalArrangement = Arrangement.Top,
-                    horizontalAlignment = Alignment.Start
-                ) {
-                    Text("City Name")
-                    Text("State")
-                    Text("Country")
-                    Text("Pin code")
-                }
+//            Surface (modifier = Modifier.padding(vertical = 4.dp, horizontal = 8.dp)){
+            Card(
+                modifier = Modifier.padding(vertical = 8.dp, horizontal = 8.dp),
+                shape = RoundedCornerShape(10.dp),
+                backgroundColor = Color.DarkGray,
+            ){
+            Column(
+                modifier = Modifier.padding(10.dp).fillMaxWidth(),
+                verticalArrangement = Arrangement.Top,
+                horizontalAlignment = Alignment.Start
+            ) {
+                Text("City", color = Color.White)
+                Text("State", color = Color.White,)
+                Text("Country", color = Color.White,)
+                Text("Pin code", color = Color.White,)
             }
+        }
+//            }
         }
     )
 
@@ -172,7 +177,7 @@ private fun CityDetails(navController: NavController){
 @Composable
 fun OnboardingScreen(navController: NavController) {
 
-    Surface {
+    Surface(color = Color(169, 190, 215)) {
         Column(
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.Center,
