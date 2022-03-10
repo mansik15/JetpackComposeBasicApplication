@@ -11,6 +11,7 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowForward
+import androidx.compose.material.icons.rounded.Person
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -93,20 +94,21 @@ private fun StateCard(name: String, navController: NavController) {
         color = Color.DarkGray,
         modifier = Modifier.padding(vertical = 4.dp, horizontal = 8.dp)
     ) {
-        Row(modifier = Modifier.padding(24.dp)) {
+        Row(modifier = Modifier.padding(24.dp), verticalAlignment = Alignment.CenterVertically) {
+            Icon(
+                Icons.Rounded.Person,
+                "contentDescription",
+                tint = Color.White
+            )
             Column(
                 modifier = Modifier
                     .weight(1f)
-                    .padding(bottom = extraPadding),
+                    .padding(5.dp),
+                verticalArrangement = Arrangement.Center,
             ) {
                 Text(
                     text = "State $name",
                     color = Color.White,
-                    /*Modifier.clickable(
-                        onClick = {
-                            Toast.makeText(context, "OnClick", Toast.LENGTH_LONG).show()
-                        }
-                    )*/
                 )
             }
             /*OutlinedButton(
@@ -158,7 +160,9 @@ private fun CityDetails(navController: NavController){
                 backgroundColor = Color.DarkGray,
             ){
             Column(
-                modifier = Modifier.padding(10.dp).fillMaxWidth(),
+                modifier = Modifier
+                    .padding(10.dp)
+                    .fillMaxWidth(),
                 verticalArrangement = Arrangement.Top,
                 horizontalAlignment = Alignment.Start
             ) {
