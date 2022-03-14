@@ -22,6 +22,10 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -199,6 +203,17 @@ fun OnboardingScreen(navController: NavController) {
     }
 }
 
+class GreetingViewModel(private val userId: String) : ViewModel() {
+    private val _message = MutableLiveData("Hi $userId")
+    val message: LiveData<String> = _message
+}
+
+class GreetingViewModelFactory(private val userId: String): ViewModelProvider.Factory {
+    @Suppress("UNCHECKED_CAST")
+    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+        return GreetingViewModel(userId) as T
+    }
+}
 
 @Preview(showBackground = true, widthDp = 320, heightDp = 320)
 @Composable
