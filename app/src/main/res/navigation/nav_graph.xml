@@ -8,13 +8,5 @@
         android:id="@+id/mainActivity"
         android:name="com.app.composeapplication.MainActivity"
         android:label="MainActivity">
-        <action
-            android:id="@+id/action_blankFragment_to_blankFragment2"
-            app:destination="@id/detailActivity" />
     </activity>
-
-    <activity
-        android:id="@+id/detailActivity"
-        android:name="com.app.composeapplication.DetailActivity"
-        android:label="DetailActivity" />
 </navigation>
