@@ -1,5 +1,7 @@
 # JetpackComposeBasicApplication
-This application represents how to use Jetpack compose UI for building lists 🚀. Also, it has navigation between two screens.
+This application represents how to use Jetpack compose UI for building lists 🚀.
+Also, defined a navigation graph with a NavHost in Compose using Compose destinations to navigate between two screens.
+Basic compose UI components are used i.e Column, Text, Icon, Button, IconButton, Card, TopAppBar, etc.
 
 
 
