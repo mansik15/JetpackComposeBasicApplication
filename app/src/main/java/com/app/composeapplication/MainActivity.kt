@@ -20,13 +20,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontStyle
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -35,10 +30,10 @@ import com.app.composeapplication.ui.theme.ComposeApplicationTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
-        val splashScreen = installSplashScreen()
-
+        installSplashScreen()
         super.onCreate(savedInstanceState)
         setContent {
+            // Entry point of the application
             ComposeApplicationTheme {
                 EntryPoint()
             }
@@ -46,6 +41,7 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+// Compose function to declare routes of application & start destination.
 @Composable
 fun EntryPoint() {
     val navController = rememberNavController()
@@ -60,20 +56,38 @@ fun EntryPoint() {
             CityDetails(navController)
         }
     }
-
-    /*var shouldShowOnboarding by rememberSaveable { mutableStateOf(true) }
-    var shouldShowDetails by rememberSaveable { mutableStateOf(true) }
-
-    if (shouldShowOnboarding) {
-        OnboardingScreen(onContinueClicked = { shouldShowOnboarding = false })
-    } else {
-        StateList()
-    }*/
-
 }
 
+// Compose function to add on boarding screen after splash.
 @Composable
-private fun StateList(navController: NavController,names: List<String> = List(1000) { "$it" }) {
+fun OnboardingScreen(navController: NavController) {
+
+    Surface(color = Color(169, 190, 215)) {
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                "Welcome to the United Kingdom!",
+                color = MaterialTheme.colors.primary,
+                fontStyle = FontStyle.Italic
+            )
+            // Explore button click will navigate to state listing screen
+            Button(
+                modifier = Modifier
+                    .padding(vertical = 24.dp),
+                onClick = { navController.navigate("state") }
+            ) {
+                Text("Explore")
+            }
+        }
+    }
+}
+
+// Compose function to show state list.
+@Composable
+private fun StateList(navController: NavController, names: List<String> = List(1000) { "$it" }) {
     Scaffold(
         topBar = {
             TopAppBar(
@@ -90,12 +104,9 @@ private fun StateList(navController: NavController,names: List<String> = List(10
     )
 }
 
+// Compose function to show a row in state list.
 @Composable
 private fun StateCard(name: String, navController: NavController) {
-    val context = LocalContext.current
-    val expanded = rememberSaveable { mutableStateOf(false) }
-
-    val extraPadding = if (expanded.value) 48.dp else 0.dp
 
     Surface(
         color = Color.DarkGray,
@@ -118,11 +129,6 @@ private fun StateCard(name: String, navController: NavController) {
                     color = Color.White,
                 )
             }
-            /*OutlinedButton(
-                onClick = { expanded.value = !expanded.value }
-            ) {
-                Text(if (expanded.value) "Show less" else "Show more")
-            }*/
             IconButton(modifier = Modifier.then(Modifier.size(24.dp)),
                 onClick = {
                     navController.navigate("detail")
@@ -137,9 +143,9 @@ private fun StateCard(name: String, navController: NavController) {
     }
 }
 
+// Compose function to display state details screen
 @Composable
-private fun CityDetails(navController: NavController){
-
+private fun CityDetails(navController: NavController) {
     Scaffold(
         topBar = {
             TopAppBar(
@@ -160,76 +166,25 @@ private fun CityDetails(navController: NavController){
             )
         },
         content = {
-//            Surface (modifier = Modifier.padding(vertical = 4.dp, horizontal = 8.dp)){
             Card(
                 modifier = Modifier.padding(vertical = 8.dp, horizontal = 8.dp),
                 shape = RoundedCornerShape(10.dp),
                 backgroundColor = Color.DarkGray,
-            ){
-            Column(
-                modifier = Modifier
-                    .padding(10.dp)
-                    .fillMaxWidth(),
-                verticalArrangement = Arrangement.Top,
-                horizontalAlignment = Alignment.Start
             ) {
-                Text("City", color = Color.White)
-                Text("State", color = Color.White,)
-                Text("Country", color = Color.White,)
-                Text("Pin code", color = Color.White,)
+                Column(
+                    modifier = Modifier
+                        .padding(10.dp)
+                        .fillMaxWidth(),
+                    verticalArrangement = Arrangement.Top,
+                    horizontalAlignment = Alignment.Start
+                ) {
+                    Text("City Name", color = Color.White)
+                    Text("State Name", color = Color.White)
+                    Text("Country Name", color = Color.White)
+                    Text("Pin code", color = Color.White)
+                }
             }
-        }
-//            }
         }
     )
 
-}
-
-@Composable
-fun OnboardingScreen(navController: NavController) {
-
-    Surface(color = Color(169, 190, 215)) {
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Text("Welcome to the United Kingdom!", color = MaterialTheme.colors.primary, fontStyle = FontStyle.Italic)
-            Button(
-                modifier = Modifier
-                    .padding(vertical = 24.dp),
-                onClick = {navController.navigate("state")}
-            ) {
-                Text("Explore")
-            }
-        }
-    }
-}
-
-class GreetingViewModel(private val userId: String) : ViewModel() {
-    private val _message = MutableLiveData("Hi $userId")
-    val message: LiveData<String> = _message
-}
-
-class GreetingViewModelFactory(private val userId: String): ViewModelProvider.Factory {
-    @Suppress("UNCHECKED_CAST")
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        return GreetingViewModel(userId) as T
-    }
-}
-
-@Preview(showBackground = true, widthDp = 320, heightDp = 320)
-@Composable
-fun OnboardingPreview() {
-    ComposeApplicationTheme {
-//        OnboardingScreen(onContinueClicked = {})
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    ComposeApplicationTheme {
-//        StateCard("Amsterdam")
-    }
 }
